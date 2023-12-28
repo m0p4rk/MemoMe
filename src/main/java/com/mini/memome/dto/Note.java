@@ -11,7 +11,7 @@ import lombok.ToString;
 @Setter
 @AllArgsConstructor
 @ToString
-public class NoteDTO {
+public class Note {
     private Long noteId; // 노트의 고유 ID
     private String userId; // 노트를 생성한 사용자 ID
     private String title; // 노트의 제목

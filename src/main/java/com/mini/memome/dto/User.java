@@ -9,7 +9,7 @@ import lombok.ToString;
 @Setter
 @AllArgsConstructor
 @ToString
-public class UserDTO {
+public class User {
     private String userId; // 사용자 ID
     private String password; // 비밀번호
     private String name; // 사용자 이름
