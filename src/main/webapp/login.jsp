@@ -19,7 +19,7 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
-                        <form action="your-login-processing-url" method="post">
+                        <form action="/MemoMe/loginUser" method="post">
                             <h3 class="text-center">MemoMe</h3>
                             <div class="form-group">
                                 <label for="username">Username</label>
