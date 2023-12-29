@@ -18,7 +18,7 @@ public class DeleteNoteServlet extends HttpServlet {
             throws ServletException, IOException, NumberFormatException {
         HttpSession session = request.getSession();
         String username = (String) session.getAttribute("username");
-        System.out.println("Received noteId parameter: " + request.getParameter("noteId"));
+        
         if (username != null) {
             try {
                 String noteIdString = request.getParameter("noteId");

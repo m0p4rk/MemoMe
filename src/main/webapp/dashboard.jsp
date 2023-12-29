@@ -100,6 +100,8 @@
             xhr.send("title=" + encodeURIComponent(noteTitle) + "&content=" + encodeURIComponent(noteText));
         }
         
+        
+        
         function deleteNote(noteId) {
             // 확인 대화상자를 통해 사용자가 삭제를 확정하는지 검사
             if (!confirm('Are you sure you want to delete this note?')) {
@@ -139,7 +141,6 @@
                             '<div class="note-item-header">' +
                             '<strong>' + note.title + '</strong>' +
                             '<div>' +
-                            '<button class="btn btn-info btn-sm">Edit</button>' +
                             '<button class="btn btn-danger btn-sm" onclick="deleteNote(' + note.noteId + ')">Delete</button>' +
                             '</div></div><p>' + note.content + '</p>';
                         notesContainer.appendChild(noteElement);
