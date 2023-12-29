@@ -99,6 +99,29 @@
             };
             xhr.send("title=" + encodeURIComponent(noteTitle) + "&content=" + encodeURIComponent(noteText));
         }
+        
+        function deleteNote(noteId) {
+            // 확인 대화상자를 통해 사용자가 삭제를 확정하는지 검사
+            if (!confirm('Are you sure you want to delete this note?')) {
+                return; // 사용자가 취소하면 함수 종료
+            }
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/MemoMe/deleteNote", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    console.log(xhr.responseText); // 서버 응답 로그
+                    loadNotes(); // 메모 목록 다시 로딩
+                }
+            };
+
+            // encodeURIComponent를 사용하여 noteId를 안전하게 인코딩
+            var data = "noteId=" + encodeURIComponent(noteId);
+            xhr.send(data);
+        }
+
 
         function loadNotes() {
             var xhr = new XMLHttpRequest();
@@ -108,6 +131,7 @@
                     var notes = JSON.parse(xhr.responseText);
                     var notesContainer = document.getElementById("savedNotes");
                     notesContainer.innerHTML = ""; // 목록 초기화
+
                     notes.forEach(function(note) {
                         var noteElement = document.createElement("div");
                         noteElement.className = "note-item";
@@ -116,7 +140,7 @@
                             '<strong>' + note.title + '</strong>' +
                             '<div>' +
                             '<button class="btn btn-info btn-sm">Edit</button>' +
-                            '<button class="btn btn-danger btn-sm">Delete</button>' +
+                            '<button class="btn btn-danger btn-sm" onclick="deleteNote(' + note.noteId + ')">Delete</button>' +
                             '</div></div><p>' + note.content + '</p>';
                         notesContainer.appendChild(noteElement);
                     });
@@ -124,6 +148,7 @@
             };
             xhr.send();
         }
+
 
         // 페이지 로드 시 메모 목록 로드
         window.onload = function() {

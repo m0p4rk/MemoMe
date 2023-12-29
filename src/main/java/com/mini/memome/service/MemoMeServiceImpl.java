@@ -134,13 +134,14 @@ public class MemoMeServiceImpl implements MemoMeService {
     }
 
     @Override
-    public void deleteNote(int noteId) {
+    public boolean deleteNote(int noteId) {
         NoteDAO noteDao = new NoteDAOImpl();
         try {
             noteDao.deleteNote(noteId);
+            return true;
         } catch (SQLException e) {
             // 적절한 예외 처리
-            throw new RuntimeException("Failed to delete note", e);
+            throw new RuntimeException("Failed to delete note", e);     
         }
     }
 
