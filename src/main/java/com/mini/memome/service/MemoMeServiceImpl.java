@@ -28,24 +28,25 @@ public class MemoMeServiceImpl implements MemoMeService {
 	}
 
 	@Override
-	public User loginUser(String username, String password) {
-		UserDAO userDao = new UserDAOImpl(); // UserDAO 인스턴스
+	public boolean loginUser(String username, String password) {
+	    UserDAO userDao = new UserDAOImpl(); // UserDAO 인스턴스
 
-		try {
-			// 데이터베이스에서 사용자 검색
-			User user = userDao.getUserByUsername(username);
-			if (user != null && user.getPassword().equals(password)) {
-				// 비밀번호가 일치하는 경우, 사용자 반환
-				return user;
-			}
-		} catch (SQLException e) {
-			// SQLException 처리
-			throw new RuntimeException("Login error", e);
-		}
+	    try {
+	        // 데이터베이스에서 사용자 검색
+	        User user = userDao.getUserByUsername(username);
+	        if (user != null && user.getPassword().equals(password)) {
+	            // 비밀번호가 일치하는 경우, true 반환
+	            return true;
+	        }
+	    } catch (SQLException e) {
+	        // SQLException 처리
+	        throw new RuntimeException("Login error", e);
+	    }
 
-		// 사용자를 찾지 못하거나 비밀번호가 일치하지 않는 경우
-		return null;
+	    // 사용자를 찾지 못하거나 비밀번호가 일치하지 않는 경우, false 반환
+	    return false;
 	}
+
 
 	@Override
 	public void updateUser(User user) {

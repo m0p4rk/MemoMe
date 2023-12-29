@@ -7,7 +7,7 @@ import com.mini.memome.dto.User;
 
 public interface MemoMeService {
 	void registerUser(User user);
-    User loginUser(String username, String password);
+    boolean loginUser(String username, String password);
     void updateUser(User user);
     User getUserById(int userId);
     void deleteUser(int userId);
