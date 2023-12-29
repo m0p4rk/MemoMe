@@ -1,5 +1,8 @@
 # MemoMe
 
+![image](https://github.com/m0p4rk/MemoMe/assets/154101651/bbac7df6-1a6a-40f0-ba06-bbd8e6964062)
+![image](https://github.com/m0p4rk/MemoMe/assets/154101651/58ef92fa-69bc-420a-9bd0-e596851ac656)
+
 ## Overview
 
 MemoMe is a dynamic web application designed as a capstone project to conclude a course on Servlets, JSP, and JSTL. Developed as a mini-project at the end of the year, it serves as a practical culmination of the learned web technologies.
