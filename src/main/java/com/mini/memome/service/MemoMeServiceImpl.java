@@ -143,4 +143,19 @@ public class MemoMeServiceImpl implements MemoMeService {
             throw new RuntimeException("Failed to delete note", e);
         }
     }
+
+    @Override
+    public int getUserIdByUsername(String username) {
+        UserDAO userDao = new UserDAOImpl();
+        try {
+            User user = userDao.getUserByUsername(username);
+            if (user != null) {
+                return user.getUserId();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // 실제 애플리케이션에서는 적절한 로깅과 예외 처리를 수행해야 합니다.
+        }
+        return -1; // 사용자가 존재하지 않거나 오류 발생 시
+    }
+
 }

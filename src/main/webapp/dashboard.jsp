@@ -1,4 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.io.IOException" %>
+<%
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
+    response.setHeader("Pragma", "no-cache"); // HTTP 1.0
+    response.setDateHeader("Expires", 0); // Proxies.
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,10 +14,19 @@
         .container {
             padding-top: 20px;
         }
+        .header-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+        }
         .logout-button {
-            position: absolute;
-            right: 10px;
-            top: 10px;
+            order: 2;
+        }
+        .user-info {
+            order: 1;
+            font-size: 1.2em;
+            font-weight: bold;
         }
         .note-display {
             background-color: #f8f9fa;
@@ -34,8 +49,13 @@
     </style>
 </head>
 <body>
-    <div class="logout-button">
-        <a href="logout" class="btn btn-danger btn-sm">Logout</a>
+    <div class="header-area">
+        <div class="user-info">
+            Welcome, <%= session.getAttribute("username") %>
+        </div>
+        <div class="logout-button">
+            <a href="logoutUser" class="btn btn-danger btn-sm">Logout</a>
+        </div>
     </div>
 
     <div class="container">
@@ -58,31 +78,57 @@
         <!-- 저장된 메모 목록 -->
         <h3>Your Notes</h3>
         <div id="savedNotes" class="note-display">
-            <%-- 서버 측에서 노트 목록을 가져와 여기에 표시합니다. --%>
-            <!-- 예시: 하드코딩된 노트 아이템 -->
-            <div class="note-item">
-                <div class="note-item-header">
-                    <strong>Note Title</strong>
-                    <div>
-                        <button class="btn btn-info btn-sm">Edit</button>
-                        <button class="btn btn-danger btn-sm">Delete</button>
-                    </div>
-                </div>
-                <p>Note content goes here...</p>
-            </div>
-            <!-- 반복하여 노트 아이템을 표시 -->
+            <!-- 서버 측에서 노트 목록을 가져와 여기에 표시 -->
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script>
         function saveNote() {
             var noteTitle = document.getElementById('noteTitle').value;
             var noteText = document.getElementById('noteText').value;
-            // ... 저장 로직
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/MemoMe/createNote", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    document.getElementById('noteTitle').value = ''; // 입력창 초기화
+                    document.getElementById('noteText').value = '';
+                    loadNotes(); // 메모 목록 다시 로딩
+                }
+            };
+            xhr.send("title=" + encodeURIComponent(noteTitle) + "&content=" + encodeURIComponent(noteText));
         }
+
+        function loadNotes() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/MemoMe/listNotes", true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var notes = JSON.parse(xhr.responseText);
+                    var notesContainer = document.getElementById("savedNotes");
+                    notesContainer.innerHTML = ""; // 목록 초기화
+                    notes.forEach(function(note) {
+                        var noteElement = document.createElement("div");
+                        noteElement.className = "note-item";
+                        noteElement.innerHTML = 
+                            '<div class="note-item-header">' +
+                            '<strong>' + note.title + '</strong>' +
+                            '<div>' +
+                            '<button class="btn btn-info btn-sm">Edit</button>' +
+                            '<button class="btn btn-danger btn-sm">Delete</button>' +
+                            '</div></div><p>' + note.content + '</p>';
+                        notesContainer.appendChild(noteElement);
+                    });
+                }
+            };
+            xhr.send();
+        }
+
+        // 페이지 로드 시 메모 목록 로드
+        window.onload = function() {
+            loadNotes();
+        };
     </script>
 </body>
 </html>

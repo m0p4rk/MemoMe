@@ -17,4 +17,5 @@ public interface MemoMeService {
     Note getNoteById(int noteId);
     List<Note> getAllNotesByUser(int userId);
     void deleteNote(int noteId);
+	int getUserIdByUsername(String username);
 }
