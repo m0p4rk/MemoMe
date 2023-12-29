@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,17 +13,25 @@ import com.mini.memome.util.DButil;
 public class UserDAOImpl implements UserDAO {
 	@Override
 	public void addUser(User user) throws SQLException {
-		try (Connection conn = DButil.getConnection()) {
-			String sql = "INSERT INTO Users (Username, Password, Email, CreateDate) VALUES (?, ?, ?, ?)";
-			try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-				stmt.setString(1, user.getUsername());
-				stmt.setString(2, user.getPassword());
-				stmt.setString(3, user.getEmail());
-				stmt.setTimestamp(4, new Timestamp(user.getCreateDate().getTime()));
-				stmt.executeUpdate();
-			}
-		}
+	    Connection conn = null;
+	    PreparedStatement pstmt = null;
+
+	    try {
+	        conn = DButil.getConnection();
+	        String sql = "INSERT INTO users (username, password, email, createDate) VALUES (?, ?, ?, ?)";
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, user.getUsername());
+	        pstmt.setString(2, user.getPassword()); // 해싱된 비밀번호를 저장해야 합니다.
+	        pstmt.setString(3, user.getEmail());
+	        pstmt.setTimestamp(4, new java.sql.Timestamp(new java.util.Date().getTime())); // 현재 시간을 설정
+
+	        pstmt.executeUpdate();
+	    } finally {
+	        if (pstmt != null) pstmt.close();
+	        if (conn != null) conn.close();
+	    }
 	}
+
 
 	@Override
 	public User getUser(int userId) throws SQLException {

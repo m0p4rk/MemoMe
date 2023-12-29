@@ -29,7 +29,7 @@
                                 <label for="password">Password</label>
                                 <input type="password" class="form-control" id="password" name="password" required>
                             </div>
-                            <button type="submit" class="btn btn-warning">Sign in</button>
+                            <button type="submit" class="btn btn-warning">Log in</button>
                             <a href="register.jsp" class="btn btn-secondary">Register</a>
                         </form>
                     </div>
