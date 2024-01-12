@@ -20,4 +20,9 @@ public class UserService {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		return userMapper.insertUser(user);
 	}
+
+	public boolean loginUser(User user) {
+	    String storedHashedPassword = userMapper.getHashedPasswordByUsername(user.getUsername());
+	    return passwordEncoder.matches(user.getPassword(), storedHashedPassword);
+	}
 }

@@ -20,4 +20,14 @@ public class UserController {
         userService.registerUser(user);
         return "redirect:/login";
     }
+    
+    @PostMapping("/login.do")
+    public String loginUser(@ModelAttribute User user) {
+    	if(userService.loginUser(user)) {
+    		return "redirect:/dashboard";
+    	} else {
+    		return "redirect:/login";
+    	}
+    	
+    }
 }
