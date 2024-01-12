@@ -1,0 +1,16 @@
+Table: notes
+Columns:
+NoteID int(11) AI PK 
+UserID int(11) 
+Title varchar(100) 
+Content text 
+CreateDate datetime 
+LastModifiedDate datetime
+
+Table: users
+Columns:
+UserID int(11) AI PK 
+Username varchar(50) 
+Password varchar(255) 
+Email varchar(100) 
+CreateDate datetime DEFAULT CURRENT_DATETIME
