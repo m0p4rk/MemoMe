@@ -33,4 +33,14 @@ public class UserController {
 		}
 
 	}
+	
+	@PostMapping("/logout.do")
+    public String logoutUser(HttpServletRequest request) {
+        // 현재 세션을 가져와서 무효화
+        request.getSession().invalidate();
+
+        // 로그아웃 후 리디렉트할 페이지 지정 (예: 로그인 페이지)
+        return "redirect:/login";
+    }
+	
 }

@@ -1,16 +1,23 @@
-Table: notes
-Columns:
-NoteID int(11) AI PK 
-UserID int(11) 
-Title varchar(100) 
-Content text 
-CreateDate datetime 
-LastModifiedDate datetime
+CREATE SCHEMA `memome`;
 
-Table: users
-Columns:
-UserID int(11) AI PK 
-Username varchar(50) 
-Password varchar(255) 
-Email varchar(100) 
-CreateDate datetime DEFAULT CURRENT_DATETIME
+CREATE TABLE `memome`.`users` (
+  `UserID` int NOT NULL AUTO_INCREMENT,
+  `Username` varchar(50) NOT NULL,
+  `Password` varchar(255) NOT NULL,
+  `Email` varchar(100) NOT NULL,
+  `CreateDate` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`UserID`)
+);
+
+CREATE TABLE `memome`.`notes` (
+  `NoteID` int NOT NULL AUTO_INCREMENT,
+  `UserID` int NOT NULL,
+  `Title` varchar(100) NOT NULL,
+  `Content` text NOT NULL,
+  `CreateDate` datetime NOT NULL,
+  `LastModifiedDate` datetime NOT NULL,
+  PRIMARY KEY (`NoteID`),
+  FOREIGN KEY (`UserID`) REFERENCES `memome`.`users` (`UserID`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
