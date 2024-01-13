@@ -25,7 +25,7 @@ public class UserController {
 
 	@PostMapping("/login.do")
 	public String loginUser(@ModelAttribute User user, HttpServletRequest request) {
-		if (userService.loginUser(user)) {
+		if (userService.AuthenticateUser(user)) {
 			request.getSession().setAttribute("loggedInUser", user.getUsername());
 			return "redirect:/dashboard";
 		} else {

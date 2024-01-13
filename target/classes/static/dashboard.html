@@ -87,83 +87,64 @@
 	</div>
 
 	<script>
-		function saveNote() {
-			var noteTitle = document.getElementById('noteTitle').value;
-			var noteText = document.getElementById('noteText').value;
+	function saveNote() {
+	    var noteTitle = document.getElementById('noteTitle').value;
+	    var noteText = document.getElementById('noteText').value;
 
-			var xhr = new XMLHttpRequest();
-			xhr.open("POST", "/MemoMe/createNote", true);
-			xhr.setRequestHeader("Content-Type",
-					"application/x-www-form-urlencoded");
-			xhr.onreadystatechange = function() {
-				if (xhr.readyState == 4 && xhr.status == 200) {
-					document.getElementById('noteTitle').value = ''; // 입력창 초기화
-					document.getElementById('noteText').value = '';
-					loadNotes(); // 메모 목록 다시 로딩
-				}
-			};
-			xhr.send("title=" + encodeURIComponent(noteTitle) + "&content="
-					+ encodeURIComponent(noteText));
-		}
+	    var xhr = new XMLHttpRequest();
+	    xhr.open("POST", "/api/notes/create", true);
+	    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	    xhr.onreadystatechange = function() {
+	        if (xhr.readyState == 4 && xhr.status == 200) {
+	            document.getElementById('noteTitle').value = '';
+	            document.getElementById('noteText').value = '';
+	            loadNotes();
+	        }
+	    };
+	    xhr.send("title=" + encodeURIComponent(noteTitle) + "&content=" + encodeURIComponent(noteText));
+	}
 
-		function deleteNote(noteId) {
-			// 확인 대화상자를 통해 사용자가 삭제를 확정하는지 검사
-			if (!confirm('Are you sure you want to delete this note?')) {
-				return; // 사용자가 취소하면 함수 종료
-			}
+	function deleteNote(noteId) {
+	    var xhr = new XMLHttpRequest();
+	    xhr.open("POST", "/api/notes/delete", true);
+	    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	    xhr.onreadystatechange = function() {
+	        if (xhr.readyState == 4 && xhr.status == 200) {
+	            loadNotes();
+	        }
+	    };
+	    xhr.send("noteId=" + encodeURIComponent(noteId));
+	}
 
-			var xhr = new XMLHttpRequest();
-			xhr.open("POST", "/MemoMe/deleteNote", true);
-			xhr.setRequestHeader("Content-Type",
-					"application/x-www-form-urlencoded");
+	function loadNotes() {
+	    var xhr = new XMLHttpRequest();
+	    xhr.open("GET", "/api/notes/user", true);
+	    xhr.onreadystatechange = function() {
+	        if (xhr.readyState == 4 && xhr.status == 200) {
+	            var notes = JSON.parse(xhr.responseText);
+	            displayNotes(notes);
+	        }
+	    };
+	    xhr.send();
+	}
 
-			xhr.onreadystatechange = function() {
-				if (xhr.readyState == 4 && xhr.status == 200) {
-					console.log(xhr.responseText); // 서버 응답 로그
-					loadNotes(); // 메모 목록 다시 로딩
-				}
-			};
-
-			// encodeURIComponent를 사용하여 noteId를 안전하게 인코딩
-			var data = "noteId=" + encodeURIComponent(noteId);
-			xhr.send(data);
-		}
-
-		function loadNotes() {
-			var xhr = new XMLHttpRequest();
-			xhr.open("GET", "/MemoMe/listNotes", true);
-			xhr.onreadystatechange = function() {
-				if (xhr.readyState == 4 && xhr.status == 200) {
-					var notes = JSON.parse(xhr.responseText);
-					var notesContainer = document.getElementById("savedNotes");
-					notesContainer.innerHTML = ""; // 목록 초기화
-
-					notes
-							.forEach(function(note) {
-								var noteElement = document.createElement("div");
-								noteElement.className = "note-item";
-								noteElement.innerHTML = '<div class="note-item-header">'
-										+ '<strong>'
-										+ note.title
-										+ '</strong>'
-										+ '<div>'
-										+ '<button class="btn btn-danger btn-sm" onclick="deleteNote('
-										+ note.noteId
-										+ ')">Delete</button>'
-										+ '</div></div><p>'
-										+ note.content
-										+ '</p>';
-								notesContainer.appendChild(noteElement);
-							});
-				}
-			};
-			xhr.send();
-		}
-
-		// 페이지 로드 시 메모 목록 로드
-		window.onload = function() {
-			loadNotes();
-		};
+	function displayNotes(notes) {
+	    var notesContainer = document.getElementById("savedNotes");
+	    notesContainer.innerHTML = '';
+	    notes.forEach(function(note) {
+	        var noteElement = document.createElement("div");
+	        noteElement.className = "note-item";
+	        noteElement.innerHTML = `<div class="note-item-header">
+	            <strong>${note.title}</strong>
+	            <div><button class="btn btn-danger btn-sm" onclick="deleteNote(${note.noteId})">Delete</button></div>
+	            </div><p>${note.content}</p>`;
+	        notesContainer.appendChild(noteElement);
+	    });
+	}
+	
+	window.onload = function() {
+	    loadNotes();
+	};
 	</script>
 </body>
 </html>

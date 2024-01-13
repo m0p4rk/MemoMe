@@ -17,4 +17,7 @@ public interface UserMapper {
     
     @Select("SELECT password FROM users WHERE username = #{username}")
     String getHashedPasswordByUsername(String username);
+    
+    @Select("SELECT UserID FROM users WHERE username = #{username}")
+	int getUserIdByUsername(String username);
 }
