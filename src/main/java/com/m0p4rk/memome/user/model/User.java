@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
-    private int userId; // UserID int(11) AI PK
-    private String username; // Username varchar(50)
-    private String password; // Password varchar(255)
-    private String email; // Email varchar(100)
-    private LocalDateTime createDate; // CreateDate datetime
+    private int userId;
+    private String username;
+    private String password;
+    private String email;
+    private LocalDateTime createDate;
 }
