@@ -21,31 +21,48 @@ public class NoteApi {
         this.userService = userService;
     }
 
-    // 노트 생성 API
     @PostMapping("/create")
     public ResponseEntity<Void> createNote(@RequestParam("title") String title,
                                            @RequestParam("content") String content,
                                            HttpServletRequest request) {
-        String username = (String) request.getSession().getAttribute("loggedInUser");
+        String username = getUsernameFromRequest(request);
         int userId = userService.findUserIdByUsername(username);
-        LocalDateTime currentTime = LocalDateTime.now();
-        Note newNote = new Note(0, userId, title, content, currentTime, null);
+        Note newNote = createNewNote(userId, title, content);
         noteService.create(newNote);
         return ResponseEntity.ok().build();
     }
+    
+    private String getUsernameFromRequest(HttpServletRequest request) {
+        return (String) request.getSession().getAttribute("loggedInUser");
+    }
 
-    // 노트 삭제 API
-    @PostMapping("/delete")
+    private Note createNewNote(int userId, String title, String content) {
+        validateNoteInput(title, content);
+        LocalDateTime currentTime = LocalDateTime.now();
+        return new Note(0, userId, title, content, currentTime, null);
+    }
+
+    private void validateNoteInput(String title, String content) {
+        if (title == null || title.trim().isEmpty()) {
+            throw new IllegalArgumentException("Title cannot be empty");
+        }
+        if (content == null || content.trim().isEmpty()) {
+            throw new IllegalArgumentException("Content cannot be empty");
+        }
+    }
+
+    @DeleteMapping("/delete")
     public ResponseEntity<Void> deleteNote(@RequestParam("noteId") int noteId) {
         noteService.delete(noteId);
         return ResponseEntity.ok().build();
     }
 
-    // 사용자별 노트 목록 조회 API
     @GetMapping("/user")
     public ResponseEntity<List<Note>> getNotesByUser(HttpServletRequest request) {
-        String username = (String) request.getSession().getAttribute("loggedInUser");
+        String username = getUsernameFromRequest(request);
         List<Note> notes = noteService.getNotesByUsername(username);
         return ResponseEntity.ok(notes);
     }
+
+    
 }

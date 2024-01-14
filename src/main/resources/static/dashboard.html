@@ -106,15 +106,16 @@
 
 	function deleteNote(noteId) {
 	    var xhr = new XMLHttpRequest();
-	    xhr.open("POST", "/api/notes/delete", true);
+	    xhr.open("DELETE", "/api/notes/delete?noteId=" + encodeURIComponent(noteId), true);
 	    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	    xhr.onreadystatechange = function() {
 	        if (xhr.readyState == 4 && xhr.status == 200) {
 	            loadNotes();
 	        }
 	    };
-	    xhr.send("noteId=" + encodeURIComponent(noteId));
+	    xhr.send();
 	}
+
 
 	function loadNotes() {
 	    var xhr = new XMLHttpRequest();

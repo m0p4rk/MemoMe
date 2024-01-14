@@ -21,7 +21,7 @@ public class UserService {
 		return userMapper.insertUser(user);
 	}
 
-	public boolean AuthenticateUser(User user) {
+	public boolean authenticateUser(User user) {
 	    String storedHashedPassword = userMapper.getHashedPasswordByUsername(user.getUsername());
 	    return passwordEncoder.matches(user.getPassword(), storedHashedPassword);
 	}
