@@ -26,13 +26,13 @@ replay_pid*
 # Custom reload trigger for development
 .reloadtrigger
 
-# Maven specific
+# Maven generated files
 target/
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
-pom.xml.next
 release.properties
+pom.properties
 
 # IDE - Eclipse
 .project
