@@ -1,5 +1,7 @@
 package com.m0p4rk.memome.common.interceptor;
 
+import java.io.IOException;
+
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -21,7 +23,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         return request.getSession().getAttribute("loggedInUser") == null;
     }
 
-    private void redirectToLoginPage(HttpServletResponse response) throws Exception {
+    private void redirectToLoginPage(HttpServletResponse response) throws IOException {
         response.sendRedirect("/login");
     }
 
