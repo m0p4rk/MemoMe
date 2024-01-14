@@ -1,0 +1,41 @@
+.container {
+	padding-top: 20px;
+}
+
+.header-area {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px;
+}
+
+.logout-button {
+	order: 2;
+}
+
+.user-info {
+	order: 1;
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+.note-display {
+	background-color: #f8f9fa;
+	border: 1px solid #e0e0e0;
+	padding: 15px;
+	margin-top: 10px;
+	min-height: 150px;
+}
+
+.note-item {
+	background-color: white;
+	border: 1px solid #ddd;
+	padding: 10px;
+	margin-bottom: 10px;
+}
+
+.note-item-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}

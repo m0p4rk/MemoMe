@@ -1,0 +1,29 @@
+body {
+	font-family: 'Noto Sans KR', sans-serif;
+	background-color: #f4f4f4;
+	color: #333;
+}
+
+.container {
+	max-width: 400px;
+	margin: 50px auto;
+	padding: 20px;
+	background-color: white;
+	border-radius: 8px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-group label {
+	font-weight: bold;
+}
+
+.btn-primary {
+	background-color: #007bff;
+	border-color: #007bff;
+	margin-bottom: 10px; /* 추가된 마진 */
+}
+
+.btn-primary:hover {
+	background-color: #0056b3;
+	border-color: #004085;
+}
