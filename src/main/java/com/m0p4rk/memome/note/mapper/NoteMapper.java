@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.m0p4rk.memome.note.model.Note;
 
@@ -22,4 +23,6 @@ public interface NoteMapper {
 			+ "FROM notes n JOIN users u ON n.UserID = u.UserID " + "WHERE u.Username = #{username}")
 	List<Note> getNotesByUsername(@Param("username") String username);
 
+	@Update("UPDATE notes SET title = #{note.title}, content = #{note.content}, lastModifiedDate = CURRENT_TIMESTAMP WHERE noteId = #{note.noteId}")
+	boolean updateNote(@Param("note") Note note);
 }
