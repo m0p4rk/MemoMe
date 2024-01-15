@@ -1,12 +1,13 @@
-# MemoMe
+### MemoMe
 
 ## Overview
-MemoMe is a Java-based web application for note management. It allows users to create, delete, and view notes in a personalized dashboard. The application is built using Spring Boot, integrating MyBatis for database interaction, and offers a robust backend API with a simple yet effective front-end interface.
+MemoMe is a Java-based web application for note management. Users can create, delete, and view notes in a personalized dashboard. This application is built using Spring Boot, integrating MyBatis for database interaction, and offers a robust backend API with a simple yet effective frontend interface.
 
 ## Features
 - User Registration and Authentication
 - Note Creation and Deletion
 - Asynchronous Note Retrieval for Dashboard
+- **File Upload and Download Functionality**
 
 ## Prerequisites
 - JDK 17 or higher
@@ -44,6 +45,7 @@ MemoMe is a Java-based web application for note management. It allows users to c
 3. **Save Note**: Add new notes from the dashboard.
 4. **View Notes**: View your notes asynchronously in the dashboard.
 5. **Delete Notes**: Delete notes from the dashboard.
+6. **File Upload and Download**: Use the file upload and download features from the dashboard.
 
 ## API Endpoints
 - POST `/register.do` - Register a new user.
@@ -52,6 +54,8 @@ MemoMe is a Java-based web application for note management. It allows users to c
 - GET `/dashboard/notesync` - Retrieve notes asynchronously for the logged-in user.
 - POST `/api/notes/create` - Create a new note.
 - DELETE `/api/notes/delete/{noteId}` - Delete a specific note.
+- POST `/api/files/upload` - Upload a file.
+- GET `/api/files/download/{fileName}` - Download a file.
 
 ## Dependencies
 - Spring Boot Starter Web
