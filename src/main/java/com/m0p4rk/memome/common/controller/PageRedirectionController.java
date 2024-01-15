@@ -10,7 +10,7 @@ public class PageRedirectionController {
 
     @GetMapping("/register")
     public String redirectRegisterPage() {
-        return "register.html";
+        return "/html/register.html";
     }
 
     @GetMapping("/login")
@@ -18,12 +18,12 @@ public class PageRedirectionController {
         if (isLoggedIn(request)) {
             return "redirect:/dashboard";
         }
-        return "login.html";
+        return "/html/login.html";
     }
 
     @GetMapping("/dashboard")
     public String redirectDashboard() {
-        return "dashboard.html";
+        return "/html/dashboard.html";
     }
 
     private boolean isLoggedIn(HttpServletRequest request) {

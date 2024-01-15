@@ -2,12 +2,13 @@ CREATE SCHEMA `memome`;
 
 CREATE TABLE `memome`.`users` (
   `UserID` int NOT NULL AUTO_INCREMENT,
-  `Username` varchar(50) NOT NULL,
+  `Username` varchar(50) NOT NULL UNIQUE,
   `Password` varchar(255) NOT NULL,
-  `Email` varchar(100) NOT NULL,
+  `Email` varchar(100) NOT NULL UNIQUE,
   `CreateDate` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`UserID`)
 );
+
 
 CREATE TABLE `memome`.`notes` (
   `NoteID` int NOT NULL AUTO_INCREMENT,

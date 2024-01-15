@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload and Download Test</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4">File Upload Test</h2>
+        <form id="uploadForm">
+            <div class="form-group">
+                <label for="file">Choose file to upload</label>
+                <input type="file" class="form-control-file" id="file">
+            </div>
+            <button type="button" class="btn btn-primary" onclick="uploadFile()">Upload</button>
+        </form>
+
+        <h2 class="mt-5 mb-4">File Download Test</h2>
+        <form id="downloadForm">
+            <div class="form-group">
+                <label for="fileName">Enter file name to download</label>
+                <input type="text" class="form-control" id="fileName" placeholder="example.txt">
+            </div>
+            <button type="button" class="btn btn-primary" onclick="downloadFile()">Download</button>
+        </form>
+    </div>
+
+    <script>
+        function uploadFile() {
+            var formData = new FormData();
+            var fileField = document.querySelector('#file');
+
+            formData.append('file', fileField.files[0]);
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(result => {
+                alert('Success: ' + result);
+            })
+            .catch(error => {
+                alert('Error: ' + error);
+            });
+        }
+
+        function downloadFile() {
+            var fileName = document.querySelector('#fileName').value;
+            window.location.href = '/download?fileName=' + fileName;
+        }
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
