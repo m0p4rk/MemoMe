@@ -29,7 +29,7 @@ function deleteNote(noteId) {
 
 function loadNotes() {
     let xhr = new XMLHttpRequest();
-    xhr.open("GET", "/api/notes/user", true);
+    xhr.open("GET", "/api/notes/readall", true);
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
             let notes = JSON.parse(xhr.responseText);

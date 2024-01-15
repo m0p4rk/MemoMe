@@ -13,7 +13,7 @@
 	<artifactId>MemoMe</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>MemoMe</name>
-	<description>Demo project for Spring Boot</description>
+	<description>MemoMe - A Java-based web application for note management</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>

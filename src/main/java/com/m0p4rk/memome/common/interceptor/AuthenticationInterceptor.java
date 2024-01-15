@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class AuthenticationInterceptor implements HandlerInterceptor {
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
         if (isUserNotLoggedIn(request)) {
             redirectToLoginPage(response);
             return false;
