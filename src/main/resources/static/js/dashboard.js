@@ -77,6 +77,35 @@ function cancelUpdate() {
 	loadNotes(); // 현재 노트 목록을 다시 로드하여 취소
 }
 
+function downloadNotes() {
+    let xhr = new XMLHttpRequest();
+    xhr.open("GET", "/api/cdn/download", true);
+    xhr.responseType = 'blob'; // 텍스트 파일을 blob 형태로 받음
+
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            // Blob을 다운로드로 처리
+            let blob = new Blob([xhr.response], { type: 'text/plain' });
+            let downloadUrl = URL.createObjectURL(blob);
+            let a = document.createElement("a");
+            a.href = downloadUrl;
+            a.download = "notes.txt";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(downloadUrl);
+        } else {
+            console.error("서버에서 파일을 다운로드하는 데 실패했습니다.");
+        }
+    };
+
+    xhr.onerror = function () {
+        console.error("네트워크 오류가 발생했습니다.");
+    };
+
+    xhr.send();
+}
+
 function displayNotes(notes) {
     let notesContainer = document.getElementById("savedNotes");
     notesContainer.innerHTML = '';
