@@ -6,7 +6,7 @@ function saveNote() {
 	xhr.open("POST", "/api/notes/create", true);
 	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	xhr.onreadystatechange = function() {
-		if (xhr.readyState == 4 && xhr.status == 200) {
+		if (xhr.readyState == 4 && xhr.status >= 200 && xhr.status < 300) {
 			document.getElementById('noteTitle').value = '';
 			document.getElementById('noteText').value = '';
 			loadNotes();
@@ -80,16 +80,16 @@ function cancelUpdate() {
 function downloadNotes() {
     let xhr = new XMLHttpRequest();
     xhr.open("GET", "/api/cdn/download", true);
-    xhr.responseType = 'blob'; // 텍스트 파일을 blob 형태로 받음
+    xhr.responseType = 'blob'; // csv 파일을 blob 형태로 받음
 
     xhr.onload = function () {
         if (xhr.status === 200) {
             // Blob을 다운로드로 처리
-            let blob = new Blob([xhr.response], { type: 'text/plain' });
+            let blob = new Blob([xhr.response], { type: 'text/csv' });
             let downloadUrl = URL.createObjectURL(blob);
             let a = document.createElement("a");
             a.href = downloadUrl;
-            a.download = "notes.txt";
+            a.download = "MemoMe.csv";
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -125,6 +125,7 @@ function displayNotes(notes) {
         notesContainer.appendChild(noteElement);
     });
 }
+
 window.onload = function() {
 	loadNotes();
 };
