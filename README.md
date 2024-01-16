@@ -1,4 +1,4 @@
-### MemoMe
+# MemoMe
 
 ## Overview
 MemoMe is a sophisticated Java-based web application designed for efficient note management. It enables users to seamlessly create, delete, and access their notes through a personalized dashboard. Developed using the robust Spring Boot framework, MemoMe integrates MyBatis for effective database interactions. It boasts a sturdy backend API paired with an intuitive frontend, making note management both simple and powerful.
