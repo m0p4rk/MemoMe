@@ -1,74 +1,64 @@
 ### MemoMe
 
 ## Overview
-MemoMe is a Java-based web application for note management. Users can create, delete, and view notes in a personalized dashboard. This application is built using Spring Boot, integrating MyBatis for database interaction, and offers a robust backend API with a simple yet effective frontend interface.
+MemoMe is a sophisticated Java-based web application designed for efficient note management. It enables users to seamlessly create, delete, and access their notes through a personalized dashboard. Developed using the robust Spring Boot framework, MemoMe integrates MyBatis for effective database interactions. It boasts a sturdy backend API paired with an intuitive frontend, making note management both simple and powerful.
 
 ## Features
-- User Registration and Authentication
-- Note Creation and Deletion
-- Asynchronous Note Retrieval for Dashboard
-- **File Upload and Download Functionality**
+- **User Registration and Authentication**: Secure system for user creation and login.
+- **Note Creation and Deletion**: Effortlessly manage your notes within the application.
+- **Asynchronous Note Retrieval**: Instantly access your notes on the dashboard without delays.
+- **CSV Download Functionality**: Conveniently download your notes in CSV format.
 
 ## Prerequisites
-- JDK 17 or higher
-- Maven 3.6 or higher
-- MySQL Database
+- **Java Development Kit (JDK)**: Version 17 or higher required.
+- **Maven**: Version 3.6 or higher.
+- **MySQL Database**: For data storage and management.
 
 ## Installation
-1. Clone the repository:
+1. **Clone the Repository**:
    ```
    git clone [repository URL]
    ```
 
-2. Navigate to the project directory:
+2. **Project Setup**:
    ```
    cd MemoMe
    ```
 
-3. Build the project using Maven:
+3. **Build with Maven**:
    ```
    mvn clean install
    ```
 
-4. Set up the MySQL database:
-   - Create a new database named `memome`.
-   - Update the `application.properties` file with your database credentials.
+4. **Database Configuration**:
+   - Establish a new database named `memome`.
+   - Adjust the `application.properties` file to match your database details.
 
-5. Run the application:
+5. **Launch the Application**:
    ```
    mvn spring-boot:run
    ```
+   (Alternatively, you can run MemoMeApplication.java)
 
 ## Usage
-1. **Register a User**: Access `/register` to create a new user account.
-2. **Login**: Navigate to `/login` and enter your credentials to log in.
-3. **Save Note**: Add new notes from the dashboard.
-4. **View Notes**: View your notes asynchronously in the dashboard.
-5. **Delete Notes**: Delete notes from the dashboard.
-6. **File Upload and Download**: Use the file upload and download features from the dashboard.
+1. **User Registration**: Visit `/register` to set up a new user account.
+2. **Login**: Go to `/login` and enter your credentials.
+3. **Note Management**: Add, view, and delete notes via the dashboard.
+4. **CSV Download**: Utilize the CSV download feature on the dashboard.
 
 ## API Endpoints
-- POST `/register.do` - Register a new user.
-- POST `/login.do` - Authenticate a user.
-- POST `/logout.do` - Logout a user.
-- GET `/dashboard/notesync` - Retrieve notes asynchronously for the logged-in user.
-- POST `/api/notes/create` - Create a new note.
-- DELETE `/api/notes/delete/{noteId}` - Delete a specific note.
-- POST `/api/files/upload` - Upload a file.
-- GET `/api/files/download/{fileName}` - Download a file.
+- **User Management**: `/register.do`, `/login.do`, `/logout.do`
+- **Notes Management**: Asynchronous retrieval (`/dashboard/notesync`), creation (`/api/notes/create`), deletion (`/api/notes/delete/{noteId}`), and update (`/api/notes/update`).
+- **File Management**: File upload (`/api/files/upload` - not yet implemented) and download (`/api/cdn/download/` - restricted to logged-in users).
 
 ## Dependencies
-- Spring Boot Starter Web
-- MyBatis Spring Boot Starter
-- Spring Boot DevTools
+- Various Spring Boot Starters (Web, DevTools, Security Crypto)
+- MyBatis Starters (Spring Boot Starter, Spring Boot Starter Test)
 - MySQL Connector Java
-- Spring Boot Starter Test
-- MyBatis Spring Boot Starter Test
 - Lombok
-- Spring Security Crypto
 
 ## Contributing
-Contributions to the MemoMe project are welcome. Please ensure to follow the coding standards and write clean, well-documented code.
+We encourage contributions to MemoMe. Adherence to coding standards and comprehensive documentation is crucial for all contributions.
 
 ## License
-MIT License
+MemoMe is under the MIT License, promoting open-source collaboration and sharing.
