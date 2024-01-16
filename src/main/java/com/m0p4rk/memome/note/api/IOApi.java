@@ -1,79 +1,53 @@
 package com.m0p4rk.memome.note.api;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-import com.m0p4rk.memome.common.model.ApiResponse;
+import com.m0p4rk.memome.note.model.Note;
+import com.m0p4rk.memome.note.service.NoteService;
 import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
+@RequestMapping("/api/cdn")
 public class IOApi {
 
-	private static final String FILE_DIRECTORY = "F:/MemoMeServer";
-	private Map<String, String> fileMap = new HashMap<>();
-	
-	private void saveFile(MultipartFile file, String uniqueFilename) throws IOException {
-        Path directoryPath = Paths.get(FILE_DIRECTORY);
+	private final NoteService noteService;
 
-        if (!Files.exists(directoryPath)) {
-            Files.createDirectories(directoryPath);
-        }
-
-        Path filePath = directoryPath.resolve(uniqueFilename);
-        Files.write(filePath, file.getBytes());
-    }
-
-	@PostMapping("/upload")
-	public ResponseEntity<?> handleFileUpload(@RequestParam("file") MultipartFile file) {
-		if (file.isEmpty()) {
-			return ResponseEntity.badRequest().body(new ApiResponse(false, "File is empty"));
-		}
-
-		try {
-			String originalFilename = file.getOriginalFilename();
-			String uniqueFilename = UUID.randomUUID().toString();
-			fileMap.put(uniqueFilename, originalFilename);
-
-			saveFile(file, uniqueFilename);
-			return ResponseEntity.ok(new ApiResponse(true, "File successfully uploaded: " + originalFilename));
-		} catch (IOException e) {
-			return ResponseEntity.internalServerError()
-					.body(new ApiResponse(false, "Failed uploading: " + e.getMessage()));
-		}
+	public IOApi(NoteService noteService) {
+		this.noteService = noteService;
 	}
 
 	@GetMapping("/download")
-	public void handleFileDownload(@RequestParam("fileName") String originalFileName, HttpServletResponse response) {
-		String uniqueFilename = fileMap.entrySet().stream().filter(entry -> originalFileName.equals(entry.getValue()))
-				.map(Map.Entry::getKey).findFirst().orElse(null);
-
-		if (uniqueFilename == null) {
-			response.setStatus(HttpStatus.BAD_REQUEST.value());
+	public void downloadNotes(HttpServletRequest request, HttpServletResponse response) {
+		String username = (String) request.getSession().getAttribute("loggedInUser");
+		if (username == null || username.isEmpty()) {
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 혹은 다른 적절한 오류 코드
 			return;
 		}
 
-		Path filePath = Paths.get(FILE_DIRECTORY, uniqueFilename);
-		response.setContentType("application/octet-stream");
-		response.setHeader("Content-Disposition", "attachment; filename=\"" + originalFileName + "\"");
+		List<Note> notes = noteService.getNotesByUsername(username);
+
+		response.setContentType("text/csv");
+		response.setHeader("Content-Disposition", "attachment;filename=notes.csv");
 
 		try (ServletOutputStream outputStream = response.getOutputStream()) {
-			Files.copy(filePath, outputStream);
+			// CSV 헤더 작성
+			outputStream.write("Title,Content,CreateDate,LastModifiedDate\n".getBytes());
+
+			// 각 노트를 CSV 포맷으로 변환
+			for (Note note : notes) {
+				String csvLine = String.format("\"%s\", \"%s\", \"%s\", \"%s\"%n",
+						note.getTitle().replace("\"", "\"\""), // CSV 형식에 맞게 따옴표 처리
+						note.getContent().replace("\"", "\"\""), note.getCreateDate(), note.getLastModifiedDate());
+				outputStream.write(csvLine.getBytes());
+			}
 			outputStream.flush();
 		} catch (IOException e) {
-			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+			e.printStackTrace();
 		}
 	}
-
 }

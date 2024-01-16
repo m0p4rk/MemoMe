@@ -28,6 +28,7 @@ public class NoteService {
 		return CompletableFuture.supplyAsync(() -> noteMapper.getNotesByUsername(username));
 	}
 
+	@Async
 	public void createOrUpdateTextFile(String fileName, String content) throws IOException {
 		Path path = Paths.get("F:/MemoMeServer", fileName);
 
