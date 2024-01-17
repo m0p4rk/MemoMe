@@ -1,6 +1,9 @@
-CSV Upload function
+UPLOAD CSV function
 -------------------
 USER Configuration function (UserEdit)
 -------------------
-Note multiple deletion
+NOTE multiple deletion
+-------------------
+REGISTER (DuplicateKeyException)
+* Confirm Password +
 -------------------
